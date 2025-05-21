@@ -10,7 +10,11 @@ import { toast } from "sonner";
 import { supabase } from "@/lib/supabaseBrowser";
 import type { User } from "@supabase/supabase-js";  // ✅ 正确引入类型
 
-function NewNoteButton() {
+type Props = {
+  user: any; // 如果你有具体类型可以换掉 any，例如 User | null
+};
+
+function NewNoteButton()  {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null); // ✅ 明确指定 user 类型

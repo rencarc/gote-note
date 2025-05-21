@@ -8,11 +8,13 @@ import { debounceTimeOut } from "@/lib/constants";
 import { updateNoteAction } from "@/actions/notes";
 import { supabase } from "@/lib/supabaseBrowser";
 
-const { data: { user } } = await supabase.auth.getUser();
+
 
 type Props = {
   noteId: string;
   startingNoteText: string;
+
+
 };
 
 let updateTimeout: NodeJS.Timeout;
