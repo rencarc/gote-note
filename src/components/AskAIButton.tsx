@@ -17,10 +17,6 @@ import { ArrowUpIcon } from "lucide-react";
 import { askAIAboutNotesAction } from "@/actions/notes";
 import "@/styles/ai-response.css";
 
-
-import { supabase } from "@/lib/supabaseBrowser";
-
-
 type Props = {
   user: User | null;
 };
@@ -34,9 +30,6 @@ function AskAIButton({ user }: Props) {
   const [questionText, setQuestionText] = useState("");
   const [questions, setQuestions] = useState<string[]>([]);
   const [responses, setResponses] = useState<string[]>([]);
-type Props = {
-  user: User | null;
-};
 
   const handleOnOpenChange = (isOpen: boolean) => {
     if (!user) {
