@@ -4,14 +4,16 @@ import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
-type ToastVariant = "success" | "error" | "default";
+// 只定义 Sonner 支持的类型（没有 default/destructive 方法）
+type ToastVariant = "success" | "error";
 
 type ToastConfig = {
   title: string;
   description: string;
-  type: ToastVariant; // 替换原来的 variant
+  type: ToastVariant;
 };
 
+// 配置提示类型
 const TOAST_CONFIG: Record<string, ToastConfig> = {
   login: {
     title: "Logged in",
@@ -57,10 +59,15 @@ function HomeToast() {
     if (isToastType(toastType)) {
       const { title, description, type } = TOAST_CONFIG[toastType];
 
-      // 调用正确的 toast 类型
-      toast[type](title, {
-        description,
-      });
+      // ✅ 明确类型安全地调用 toast 方法
+      switch (type) {
+        case "success":
+          toast.success(title, { description });
+          break;
+        case "error":
+          toast.error(title, { description });
+          break;
+      }
 
       removeUrlParam();
     }
