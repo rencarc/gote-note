@@ -11,11 +11,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+import { Button } from "./ui/button";
 import { Loader2, Trash2 } from "lucide-react";
 import { useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { toast } from "sonner"
+import { toast } from "sonner";
 import { deleteNoteAction } from "@/actions/notes";
 
 type Props = {
@@ -25,7 +25,6 @@ type Props = {
 
 function DeleteNoteButton({ noteId, deleteNoteLocally }: Props) {
   const router = useRouter();
-
   const noteIdParam = useSearchParams().get("noteId") || "";
 
   const [isPending, startTransition] = useTransition();
