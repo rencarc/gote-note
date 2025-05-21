@@ -1,37 +1,37 @@
 "use client";
 
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
-type ToastVariant = "success" | "destructive" | "default";
+type ToastVariant = "success" | "error" | "default";
 
 type ToastConfig = {
   title: string;
   description: string;
-  variant: ToastVariant;
+  type: ToastVariant; // 替换原来的 variant
 };
 
 const TOAST_CONFIG: Record<string, ToastConfig> = {
   login: {
     title: "Logged in",
     description: "You have been successfully logged in",
-    variant: "success",
+    type: "success",
   },
   signUp: {
     title: "Signed up",
     description: "Check your email for a confirmation link",
-    variant: "success",
+    type: "success",
   },
   newNote: {
     title: "New Note",
     description: "You have successfully created a new note",
-    variant: "success",
+    type: "success",
   },
   logOut: {
     title: "Logged out",
     description: "You have been successfully logged out",
-    variant: "success",
+    type: "success",
   },
 };
 
@@ -43,24 +43,28 @@ function isToastType(value: string | null): value is ToastType {
 
 function HomeToast() {
   const toastType = useSearchParams().get("toastType");
-  const { toast } = useToast();
 
   const removeUrlParam = () => {
     const searchParams = new URLSearchParams(window.location.search);
     searchParams.delete("toastType");
-    const newUrl = `${window.location.pathname}${searchParams.toString() ? `?${searchParams}` : ""}`;
+    const newUrl = `${window.location.pathname}${
+      searchParams.toString() ? `?${searchParams}` : ""
+    }`;
     window.history.replaceState({}, "", newUrl);
   };
 
   useEffect(() => {
     if (isToastType(toastType)) {
-      toast({
-        ...TOAST_CONFIG[toastType],
+      const { title, description, type } = TOAST_CONFIG[toastType];
+
+      // 调用正确的 toast 类型
+      toast[type](title, {
+        description,
       });
 
       removeUrlParam();
     }
-  }, [toastType, toast]);
+  }, [toastType]);
 
   return null;
 }
