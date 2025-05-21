@@ -87,15 +87,15 @@ export const askAIAboutNotesAction = async (
     return "You don't have any notes yet.";
   }
 
-  const formattedNotes = notes
-    .map((note) =>
-      `
-      Text: ${note.text}
-      Created at: ${note.createdAt}
-      Last updated: ${note.updatedAt}
-      `.trim(),
-    )
-    .join("\n");
+const formattedNotes = notes
+  .map((note: Note) =>
+    `
+    Text: ${note.text}
+    Created at: ${note.createdAt}
+    Last updated: ${note.updatedAt}
+    `.trim()
+  )
+  .join("\n");
 
   const messages: ChatCompletionMessageParam[] = [
     {
