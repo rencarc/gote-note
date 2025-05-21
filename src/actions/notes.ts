@@ -6,6 +6,13 @@ import { handleError } from "@/lib/utils";
 import openai from "@/openai";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
+
+type Note = {
+  text: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export const createNoteAction = async (noteId: string) => {
   try {
     const user = await getUser();
