@@ -34,11 +34,9 @@ function DeleteNoteButton({ noteId, deleteNoteLocally }: Props) {
       const { errorMessage } = await deleteNoteAction(noteId);
 
       if (!errorMessage) {
-        toast({
-          title: "Note Deleted",
-          description: "You have successfully deleted the note",
-          variant: "success",
-        });
+        toast.success("Note Deleted", {
+  description: "You have successfully deleted the note"
+});
 
         deleteNoteLocally(noteId);
 
@@ -46,11 +44,9 @@ function DeleteNoteButton({ noteId, deleteNoteLocally }: Props) {
           router.replace("/");
         }
       } else {
-        toast({
-          title: "Error",
-          description: errorMessage,
-          variant: "destructive",
-        });
+        toast.error("Error", {
+  description: errorMessage
+});
       }
     });
   };
