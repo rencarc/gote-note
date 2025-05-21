@@ -1,20 +1,18 @@
-'use client'
+'use client';
 
-import { useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { createClient } from '@/lib/utils/supabase/client'
+import { useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { supabase } from '@/lib/supabaseBrowser'; // ✅ 注意这里变量名是 supabase
 
 export default function ConfirmPage() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const access_token = searchParams.get('access_token')
-    const refresh_token = searchParams.get('refresh_token')
+    const access_token = searchParams.get('access_token');
+    const refresh_token = searchParams.get('refresh_token');
 
     if (access_token && refresh_token) {
-      const supabase = createClient()
-
       supabase.auth
         .setSession({
           access_token,
@@ -22,17 +20,14 @@ export default function ConfirmPage() {
         })
         .then(({ error }) => {
           if (!error) {
-            router.push('/')
+            router.push('/');
           } else {
-            console.error('Error setting session:', error.message)
+            console.error('Error setting session:', error.message);
           }
-        })
+        });
     }
-  }, [searchParams, router])
+  }, [router, searchParams]);
 
-  return (
-    <div className="flex h-screen items-center justify-center">
-      <p className="text-center text-lg">Confirming your email...</p>
-    </div>
-  )
+  return null;
 }
+
