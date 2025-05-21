@@ -8,17 +8,23 @@ import { v4 as uuidv4 } from "uuid";
 import { createNoteAction } from "@/actions/notes";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabaseBrowser";
+import type { User } from "@supabase/supabase-js";  // ✅ 正确引入类型
 
 function NewNoteButton() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null); // ✅ 明确指定 user 类型
 
-  // ✅ 组件加载时获取 Supabase 用户
   useEffect(() => {
     const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
+      const { data, error } = await supabase.auth.getUser();
+
+      if (error) {
+        console.error("Failed to fetch user:", error.message);
+        return;
+      }
+
+      setUser(data.user);
     };
 
     fetchUser();
@@ -27,16 +33,21 @@ function NewNoteButton() {
   const handleClickNewNoteButton = async () => {
     if (!user) {
       router.push("/login");
-    } else {
-      setLoading(true);
+      return;
+    }
 
-      toast("Creating a new note...");
+    setLoading(true);
+    toast("Creating a new note...");
 
+    try {
       const uuid = uuidv4();
       await createNoteAction(uuid);
-
       toast.success("Note created successfully!");
       router.push(`/?noteId=${uuid}&toastType=newNote`);
+    } catch (err) {
+      toast.error("Failed to create note.");
+      console.error(err);
+    } finally {
       setLoading(false);
     }
   };
