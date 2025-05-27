@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // ⚠️ 不要写 experimental.nodeMiddleware
+  // 也不需要 runtime: "nodejs" 的 middleware
 };
 
 export default nextConfig;
