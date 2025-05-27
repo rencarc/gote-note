@@ -15,10 +15,17 @@ async function HomePage({ searchParams }: Props) {
   const noteId = Array.isArray(noteIdParam)
     ? noteIdParam![0]
     : noteIdParam || "";
-  const note = await prisma.note.findUnique({
-    where: { id: noteId, authorId : user?.id },
+    
+let note = null;
+
+if (noteId && user?.id) {
+  note = await prisma.note.findUnique({
+    where: {
+      id: noteId,
+      authorId: user.id,
+    },
   });
-  
+}
 
    return (
     <div className="flex h-full flex-col items-center gap-4">
