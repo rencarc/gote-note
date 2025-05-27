@@ -2,22 +2,21 @@ import { prisma } from "@/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const userId = searchParams.get("userId") || "";
+  const searchParams = new URL(request.url).searchParams;
+  const userId = searchParams.get("userId");
 
-  const newestNoteId = await prisma.note.findFirst({
-    where: {
-      authorId: userId,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    select: {
-      id: true,
-    },
+  if (!userId) {
+    return NextResponse.json(
+      { error: "Missing userId" },
+      { status: 400 }
+    );
+  }
+
+  const newestNote = await prisma.note.findFirst({
+    where: { authorId: userId },
+    orderBy: { createdAt: "desc" },
+    select: { id: true },
   });
 
-  return NextResponse.json({
-    newestNoteId: newestNoteId?.id,
-  });
+  return NextResponse.json({ newestNoteId: newestNote?.id });
 }
