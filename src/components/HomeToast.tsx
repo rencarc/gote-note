@@ -59,7 +59,7 @@ function HomeToast() {
     if (isToastType(toastType)) {
       const { title, description, type } = TOAST_CONFIG[toastType];
 
-      // ✅ 明确类型安全地调用 toast 方法
+      // 明确类型安全地调用 toast 方法
       switch (type) {
         case "success":
           toast.success(title, { description });
